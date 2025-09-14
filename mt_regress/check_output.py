@@ -1,6 +1,6 @@
 
-from match_string import match_string
-from utils import MTException
+from .match_string import match_string
+from .utils import MTException
 
 def report_unmatch(prop, expect, actual):
   message = f"""

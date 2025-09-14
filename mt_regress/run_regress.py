@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
 import sys
-from run_file import run_file
-from traverse_directory import traverse 
-from utils import cxxkind, pythonkind
+from .run_file import run_file
+from .traverse_directory import traverse 
+from .utils import cxxkind, pythonkind
 
 def parseArgv(argv):
   index = 1

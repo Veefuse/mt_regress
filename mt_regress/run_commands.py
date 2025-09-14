@@ -1,9 +1,10 @@
 
 import tempfile
 import subprocess
-from check_output import check_output, check_status
-from format_input import format_cwd, format_input
-from utils import MTException, make_value_map
+
+from .check_output import check_output, check_status
+from .format_input import format_cwd, format_input
+from .utils import MTException, make_value_map
 
 def run_command(f, command, cwd, value_map):
   line = command["cmd"].format(**value_map)

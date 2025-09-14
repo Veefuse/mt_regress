@@ -21,7 +21,7 @@ def traverse(f, args):
     
     return [p.result() for p in ps]
 
-def traverse_files(f, args):
+def traverse_list(f, args):
   with concurrent.futures.ThreadPoolExecutor() as executor:
     ps = executor.map(f, args)
     return [r for r in ps]

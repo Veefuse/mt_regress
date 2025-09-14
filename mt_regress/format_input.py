@@ -1,5 +1,5 @@
 
-from utils import MTException
+from .utils import MTException
 
 def format_stdin(command, value_map):
   stdin0 = command.get("stdin")

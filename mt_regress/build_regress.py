@@ -3,10 +3,10 @@
 import sys
 import yaml
 
-from run_commands import run_build_commands
-from run_file import extract_file, remove_commands
-from traverse_directory import traverse, traverse_files 
-from utils import FileKind, cxxkind, pythonkind
+from .run_commands import run_build_commands
+from .run_file import extract_file, remove_commands
+from .traverse_directory import traverse, traverse_list 
+from .utils import FileKind, cxxkind, pythonkind
 
 class literal_unicode(str): pass
 
@@ -50,7 +50,7 @@ def init_commands(filename, filekind: FileKind):
       content = f"\n{filekind.start_label}\n- cmd: \n{filekind.end_label}\n"
       file.write(content)
 
-def handle_file(op, filekinds):
+def build_file(op, filekinds):
   op_commands = init_commands if op == "init" else run_commands
   def f(file):
     for filekind in filekinds:
@@ -77,5 +77,5 @@ def parseArgv(argv):
 
 if __name__ == "__main__":
   (op, index) = parseArgv(sys.argv)
-  func = handle_file(op, [cxxkind, pythonkind])
-  traverse_files(func, sys.argv[index:])
+  func = build_file(op, [cxxkind, pythonkind])
+  traverse_list(func, sys.argv[index:])

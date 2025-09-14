@@ -1,6 +1,6 @@
 
 import yaml
-from run_commands import run_check_commands, run_exec_commands
+from .run_commands import run_check_commands, run_exec_commands
 
 def remove_commands(filename, filekind):
   with open(filename, "r") as file:
