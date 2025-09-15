@@ -3,7 +3,7 @@ import tempfile
 import subprocess
 
 from .check_output import check_result
-from .format_input import format_cwd, format_input
+from .format_input import format_cwd, format_env, format_input
 from .utils import MTException, make_value_map
 
 def run_command(f, command, cwd, value_map):
@@ -11,7 +11,8 @@ def run_command(f, command, cwd, value_map):
   cmd = line.split(' ')
   input = format_input(command, value_map)
   cwd1 = format_cwd(cwd, command, value_map)
-  return f(command, cwd1, cmd, input, value_map)
+  env1 = format_env(command, value_map)
+  return f(command, cwd1, env1, cmd, input, value_map)
 
 def run_commands(f, cwd, file, commands):
   value_map = make_value_map(file)
@@ -28,8 +29,8 @@ def run_commands(f, cwd, file, commands):
     return []
 
 def run_check_commands(file, commands):
-  def f(command, cwd, cmd, input, value_map):
-    result = subprocess.run(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input=input)
+  def f(command, cwd, env, cmd, input, value_map):
+    result = subprocess.run(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input=input, env=env)
     check_result(command, result, value_map)
     return result
 
@@ -37,7 +38,7 @@ def run_check_commands(file, commands):
     return run_commands(f, tmp_dir, file, commands)
 
 def run_exec_commands(file, commands):
-  def f(command, cwd, cmd, input, value_map):
+  def f(command, cwd, env, cmd, input, value_map):
     print(' '.join(cmd))
-    subprocess.run(cmd, cwd=cwd, input=input)
+    subprocess.run(cmd, cwd=cwd, input=input, env=env)
   run_commands(f, ".", file, commands)

@@ -25,3 +25,6 @@ def main():
   (mode, index) = parseArgv(sys.argv)
   func = run_file(mode, [cxxkind, pythonkind])
   traverse(func, sys.argv[index:])
+
+if __name__ == "__main__":
+  main()

@@ -1,4 +1,5 @@
 
+import os
 from .utils import MTException
 
 def format_stdin(command, value_map):
@@ -30,3 +31,22 @@ def format_cwd(cwd0, command, value_map):
     return cwd1.format(**value_map)
   else:
     raise MTException("unknown cwd type:" + cwd1)
+
+def format_env0(input_dict: dict[str, str], value_map: dict[str, str]) -> dict[str, str]:
+  output_dict = {}
+  for key, value in input_dict.items():
+    if key == "":
+      output_dict.update(os.environ)
+    else:
+      output_dict[key] = value.format(**value_map)
+  return output_dict
+
+def format_env(command, value_map):
+  env1 = command.get("env")
+  if env1 == None:
+    return None
+  elif isinstance(env1, dict):
+    return format_env0(env1, value_map)
+  else:
+    raise MTException("unknown env type:" + env1)
+ 
