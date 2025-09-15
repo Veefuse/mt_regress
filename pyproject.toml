@@ -4,6 +4,7 @@ name = "mt_regress"
 version = "1.0.1"
 description = "a regress test tool"
 dependencies = [
+  "PyYAML"
 ]
 classifiers = [
   "Programming Language :: Python :: 3",

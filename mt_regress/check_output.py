@@ -36,3 +36,8 @@ def check_status(command, actual, value_map):
     check_output(command, "status", str(actual), value_map)
   else:
     raise MTException("unknown status type:" + expect)
+
+def check_result(command, result, value_map):
+  check_output(command, "stdout", result.stdout.decode('utf-8'), value_map)
+  check_output(command, "stderr", result.stderr.decode('utf-8'), value_map)
+  check_status(command, result.returncode, value_map)

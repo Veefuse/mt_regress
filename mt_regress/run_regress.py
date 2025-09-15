@@ -21,7 +21,7 @@ def parseArgv(argv):
       index = index + 1
   return (mode, index)
 
-if __name__ == "__main__":
+def main():
   (mode, index) = parseArgv(sys.argv)
   func = run_file(mode, [cxxkind, pythonkind])
   traverse(func, sys.argv[index:])

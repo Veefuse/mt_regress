@@ -2,7 +2,7 @@
 import tempfile
 import subprocess
 
-from .check_output import check_output, check_status
+from .check_output import check_result
 from .format_input import format_cwd, format_input
 from .utils import MTException, make_value_map
 
@@ -30,23 +30,14 @@ def run_commands(f, cwd, file, commands):
 def run_check_commands(file, commands):
   def f(command, cwd, cmd, input, value_map):
     result = subprocess.run(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input=input)
-    check_output(command, "stdout", result.stdout.decode('utf-8'), value_map)
-    check_output(command, "stderr", result.stderr.decode('utf-8'), value_map)
-    check_status(command, result.returncode, value_map)
+    check_result(command, result, value_map)
+    return result
 
   with tempfile.TemporaryDirectory() as tmp_dir:
-    run_commands(f, tmp_dir, file, commands)
+    return run_commands(f, tmp_dir, file, commands)
 
 def run_exec_commands(file, commands):
   def f(command, cwd, cmd, input, value_map):
     print(' '.join(cmd))
     subprocess.run(cmd, cwd=cwd, input=input)
   run_commands(f, ".", file, commands)
-
-def run_build_commands(file, commands):
-  def f(command, cwd, cmd, input, value_map):
-    result = subprocess.run(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input=input)
-    return result
-
-  with tempfile.TemporaryDirectory() as tmp_dir:
-    return run_commands(f, tmp_dir, file, commands)
