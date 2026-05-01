@@ -1,4 +1,8 @@
 
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "mt_regress"
 version = "1.0.1"
@@ -10,3 +14,7 @@ classifiers = [
   "Programming Language :: Python :: 3",
   "License :: OSI Approved :: MIT License"
 ]
+
+[project.scripts]
+run_regress = "mt_regress.run_regress:main"
+build_regress = "mt_regress.build_regress:main"
