@@ -32,7 +32,7 @@ def format_cwd(cwd0, command, value_map):
   else:
     raise MTException("unknown cwd type:" + cwd1)
 
-def format_env0(input_dict: dict[str, str], value_map: dict[str, str]) -> dict[str, str]:
+def format_env0(input_dict, value_map):
   output_dict = {}
   for key, value in input_dict.items():
     if key == "":
