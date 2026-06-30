@@ -17,5 +17,4 @@ classifiers = [
 ]
 
 [project.scripts]
-run_regress = "mt_regress.run_regress:main"
-build_regress = "mt_regress.build_regress:main"
+mt_regress = "mt_regress.mt_regress:main"

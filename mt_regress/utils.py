@@ -12,11 +12,18 @@ def make_value_map(filename):
   return { "curfile": curfile, "curdir": curdir }
 
 class FileKind:
-  def __init__(self, suffixs, start_label, end_label, todo_label):
+  def __init__(self, suffixs, start_label, end_label):
     self.suffixs     = suffixs
     self.start_label = start_label
     self.end_label   = end_label
-    self.todo_label  = todo_label
 
-cxxkind = FileKind([".c", ".cpp", ".cxx", ".cc"], "#ifdef MTTest", "#endif", "#ifdef TodoMTTest")
-pythonkind = FileKind([".py"] , '"""MTTest', '"""', '"""TodoMTTest')
+cxxkind = FileKind([".c", ".cpp", ".cxx", ".cc"], "#ifdef MTTest", "#endif")
+pythonkind = FileKind([".py"] , '"""MTTest', '"""')
+
+cxxTodoKind = FileKind([".c", ".cpp", ".cxx", ".cc"], "#ifdef TodoMTTest", "#endif")
+pythonTodokind = FileKind([".py"] , '"""TodoMTTest', '"""')
+
+class TestCase:
+  def __init__(self, filekind, commands):
+    self.filekind = filekind
+    self.commands = commands

@@ -3,8 +3,7 @@
 import sys
 import yaml
 
-from .run_commands import run_check_commands
-from .run_file import extract_file, remove_commands
+from .run_file import remove_commands
 from .traverse_directory import traverse
 from .utils import FileKind, cxxkind, pythonkind
 
@@ -30,19 +29,18 @@ def fill_command(command, result):
     command["status"] = result.returncode
 
 def run_build_commands(filename, filekind: FileKind):
-  commands = extract_file(filename, filekind)
-  results = run_check_commands(filename, commands)
-  for command, result in zip(commands, results):
-    fill_command(command, result)
-  rewrite_file(filename, filekind, commands)
+  return
+  # commands = extract_file(filename, filekind)
+  # results = run_check_commands(filename, commands)
+  # for command, result in zip(commands, results):
+  #   fill_command(command, result)
+  # rewrite_file(filename, filekind, commands)
 
 def init_commands(filename, filekind: FileKind):
   with open(filename, "r+") as file:
     content = file.read()
     if -1 != content.find(filekind.start_label):
       print("already have commands:", filename)
-    elif -1 != content.find(filekind.todo_label):
-      print("already have todo commands:", filename)
     else:
       content = f"\n{filekind.start_label}\n- cmd: \n{filekind.end_label}\n"
       file.write(content)

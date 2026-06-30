@@ -1,6 +1,6 @@
 
 import yaml
-from .run_commands import run_check_commands, run_exec_commands
+from .utils import TestCase
 
 def remove_commands(filename, filekind):
   with open(filename, "r") as file:
@@ -14,37 +14,43 @@ def remove_commands(filename, filekind):
 
     return ''.join(prices).rstrip()
 
-def extract_commands(filename, filekind):
+def extract_testcases(content, filekind):
+  ss = content.split(filekind.start_label)[1:]
+  yaml_contents = [s.split(filekind.end_label)[0] for s in ss]
+
+  testcases = []
+  for y in yaml_contents:
+    commands = yaml.load(stream = y, Loader = yaml.FullLoader)
+    testcase = TestCase(filekind, commands)
+    testcases.append(testcase)
+  return testcases
+
+def extract_all_testcases(filename, filekinds):
   with open(filename, "r") as file:
     content = file.read()
-    if content.find(filekind.todo_label) != -1: 
-      print("todo:", filename)
-      return []
+    testcases = []
+    for filekind in filekinds:
+      cases = extract_testcases(content, filekind) 
+      testcases += cases
+    return testcases
 
-    ss = content.split(filekind.start_label)[1:]
-    yaml_contents = [s.split(filekind.end_label)[0] for s in ss]
-
-    if len(yaml_contents) == 0:
-      print("leak test command:", filename)
-      return []
-
-    commands = []
-    for y in yaml_contents:
-      cmds = yaml.load(stream = y, Loader = yaml.FullLoader)
-      commands += cmds
-    return commands
-
-def extract_file(file, filekind):
-  for suffix in filekind.suffixs:
-    if file.endswith(suffix):
-      return extract_commands(file, filekind)
-  return []
+def match_filekinds(file, filekinds):
+  s = []
+  for filekind in filekinds:
+    for suffix in filekind.suffixs:
+      if file.endswith(suffix):
+        s.append(filekind)
+  return s
 
 def run_file(mode, filekinds):
-  run_commands = run_exec_commands if mode == "exec" else run_check_commands
-  def f(file):
-    for filekind in filekinds:
-      commands = extract_file(file, filekind)
-      if len(commands) > 0:
-        run_commands(file, commands)
+  def f(filename):
+    filekinds1 = match_filekinds(filename, filekinds)
+    if len(filekinds1) > 0:
+      testcases = extract_all_testcases(filename, filekinds1)
+      if len(testcases) == 0:
+        print("leak test command:", filename)
+      else:
+        for testcase in testcases:
+          mode(filename, testcase.commands)
+            
   return f
