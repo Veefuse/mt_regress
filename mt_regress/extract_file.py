@@ -34,12 +34,11 @@ def extract_all_testcases(filename, filekinds):
       testcases += cases
     return testcases
 
-def match_filekinds(file, filekinds):
+def match_filekinds(filename, filekinds):
   s = []
   for filekind in filekinds:
-    for suffix in filekind.suffixs:
-      if file.endswith(suffix):
-        s.append(filekind)
+    if filekind.regex.search(filename):
+      s.append(filekind)
   return s
 
 def extract_file(filename, filekinds):

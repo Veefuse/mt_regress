@@ -15,19 +15,17 @@ def run_file1(func, filename, filekinds):
     func(filename, testcase)
             
 def run_file(mode):
+  filekinds0 = [cxxkind, pythonkind]
+  filekinds1 = [cxxkind, pythonkind, cxxTodoKind, pythonTodokind]
   def f(filename):
     if mode == "init":
-      filekinds = [cxxkind, pythonkind]
-      init_testcases(filename, filekinds)
+      init_testcases(filename, filekinds0)
     elif mode == "build":
-      filekinds = [cxxkind, pythonkind, cxxTodoKind, pythonTodokind]
-      build_testcases(filename, filekinds)
+      build_testcases(filename, filekinds1)
     elif mode == "exec":
-      filekinds = [cxxkind, pythonkind, cxxTodoKind, pythonTodokind]
-      run_file1(exec_testcase, filename, filekinds)
+      run_file1(exec_testcase, filename, filekinds1)
     else:
-      filekinds = [cxxkind, pythonkind]
-      run_file1(check_testcase, filename, filekinds)
+      run_file1(check_testcase, filename, filekinds0)
 
   return f
 
