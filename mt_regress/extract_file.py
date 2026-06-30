@@ -42,15 +42,13 @@ def match_filekinds(file, filekinds):
         s.append(filekind)
   return s
 
-def run_file(mode, filekinds):
-  def f(filename):
-    filekinds1 = match_filekinds(filename, filekinds)
-    if len(filekinds1) > 0:
-      testcases = extract_all_testcases(filename, filekinds1)
-      if len(testcases) == 0:
-        print("leak test command:", filename)
-      else:
-        for testcase in testcases:
-          mode(filename, testcase.commands)
-            
-  return f
+def extract_file(filename, filekinds):
+  filekinds1 = match_filekinds(filename, filekinds)
+  if len(filekinds) == 0:
+    return []
+  else:
+    testcases = extract_all_testcases(filename, filekinds1)
+    if len(testcases) == 0:
+      print("leak test command:", filename)
+    return testcases
+ 

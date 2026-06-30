@@ -28,17 +28,17 @@ def run_commands(f, cwd, file, commands):
     print(e)
     return []
 
-def run_check_commands(file, commands):
+def check_testcase(file, testcase):
   def f(command, cwd, env, cmd, input, value_map):
     result = subprocess.run(cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input=input, env=env)
     check_result(command, result, value_map)
     return result
 
   with tempfile.TemporaryDirectory() as tmp_dir:
-    return run_commands(f, tmp_dir, file, commands)
+    return run_commands(f, tmp_dir, file, testcase.commands)
 
-def run_exec_commands(file, commands):
+def exec_testcase(file, testcase):
   def f(command, cwd, env, cmd, input, value_map):
     print(' '.join(cmd))
     subprocess.run(cmd, cwd=cwd, input=input, env=env)
-  run_commands(f, ".", file, commands)
+  run_commands(f, ".", file, testcase.commands)

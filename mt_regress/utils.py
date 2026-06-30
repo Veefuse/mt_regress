@@ -1,5 +1,14 @@
 
 import os
+import yaml
+
+class literal_unicode(str): pass
+
+def literal_unicode_representer(dumper, data):
+    return dumper.represent_scalar(u'tag:yaml.org,2002:str', data, style='|')
+
+def init_yaml():
+  yaml.add_representer(literal_unicode, literal_unicode_representer)
 
 class MTException(Exception):
   def __init__(self, message, *args, **kwargs):
