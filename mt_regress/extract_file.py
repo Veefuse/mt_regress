@@ -44,7 +44,7 @@ def match_filekinds(file, filekinds):
 
 def extract_file(filename, filekinds):
   filekinds1 = match_filekinds(filename, filekinds)
-  if len(filekinds) == 0:
+  if len(filekinds1) == 0:
     return []
   else:
     testcases = extract_all_testcases(filename, filekinds1)
