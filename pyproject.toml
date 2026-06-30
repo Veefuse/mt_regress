@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mt_regress"
-version = "1.0.1"
+version = "1.0.2"
 description = "a regress test tool"
 requires-python = ">=3.8"
 dependencies = [
