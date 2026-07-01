@@ -2,18 +2,6 @@
 import yaml
 from .utils import TestCase
 
-def remove_commands(filename, filekind):
-  with open(filename, "r") as file:
-    content = file.read()
-    ss = content.split(filekind.start_label)
-    prices = [ss[0]]
-    for s in ss[1:]:
-      r = s.split(filekind.end_label)
-      if len(r) == 2:
-        prices.append(r[1])
-
-    return ''.join(prices).rstrip()
-
 def extract_testcases(content, filekind):
   ss = content.split(filekind.start_label)[1:]
   yaml_contents = [s.split(filekind.end_label)[0] for s in ss]

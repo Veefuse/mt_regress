@@ -6,7 +6,7 @@ mode:
   --init            init testcase
   --build           build testcase
   --exec            execute testcase
-  --check           check testcase
+  --check           check testcase (default)
 
 options:
   --help            show help message
